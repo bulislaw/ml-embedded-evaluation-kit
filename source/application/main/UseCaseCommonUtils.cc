@@ -125,11 +125,14 @@ namespace app {
 
     int ReadUserInputAsInt()
     {
-        char chInput[128];
-        memset(chInput, 0, sizeof(chInput));
+        // char chInput[128];
+        // memset(chInput, 0, sizeof(chInput));
 
-        hal_get_user_input(chInput, sizeof(chInput));
-        return atoi(chInput);
+        // hal_get_user_input(chInput, sizeof(chInput));
+        // return atoi(chInput);
+
+        // There's some kind of error in handling input on CS300, run all inferences as a workaround
+        return 1;
     }
 
     void DumpTensorData(const uint8_t* tensorData, size_t size, size_t lineBreakForNumElements)
