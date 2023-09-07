@@ -79,8 +79,8 @@ function(platform_custom_post_build)
         set(LINKER_SECTION_TAGS     "*.at_bram" "*.at_ddr")
         set(LINKER_OUTPUT_BIN_TAGS  "bram.bin"  "ddr.bin")
     else()
-        set(LINKER_SECTION_TAGS     "*.at_itcm" "*.at_ddr")
-        set(LINKER_OUTPUT_BIN_TAGS  "itcm.bin"  "ddr.bin")
+        set(LINKER_SECTION_TAGS     "*.at_itcm" "*.at_ddr" "*.at_model")
+        set(LINKER_OUTPUT_BIN_TAGS  "itcm.bin"  "ddr.bin" "model.bin")
     endif()
 
     add_bin_generation_command(

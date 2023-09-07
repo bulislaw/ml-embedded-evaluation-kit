@@ -25,7 +25,8 @@ MEMORY
   DTCM  (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00080000
   BRAM  (rwx) : ORIGIN = 0x11000000, LENGTH = 0x00100000
   SRAM  (rwx) : ORIGIN = 0x31000000, LENGTH = 0x00200000
-  DDR   (rwx) : ORIGIN = 0x70000000, LENGTH = 0x02000000
+  MODEL (rwx) : ORIGIN = 0x70000000, LENGTH = 0x00A00000
+  DDR   (rwx) : ORIGIN = 0x70A00000, LENGTH = 0x01600000
 
   /* Dynamic load regions declared for use by FVP only
    * These regions are mentioned in the CMake subsystem profile.
@@ -181,6 +182,16 @@ SECTIONS
     (__STACK_SIZE + __bss_end__ - __bss_start__) <= LENGTH(DTCM),
     "DTCM overflow")
 
+  .model.at_model :
+  {
+    /* __attribute__((aligned(16))) is not handled by the CMSIS startup code.
+     * Force the alignment here as a workaround */
+    . = ALIGN(16);
+    /* nn model's default space */
+    *(nn_model)
+    . = ALIGN (16);
+  } > MODEL AT > MODEL
+
   .ddr.at_ddr :
   {
     /* __attribute__((aligned(16))) is not handled by the CMSIS startup code.
@@ -189,9 +200,7 @@ SECTIONS
     /* nn model's baked in input matrices */
     *(ifm)
     . = ALIGN(16);
-    /* nn model's default space */
-    *(nn_model)
-    . = ALIGN (16);
+
     /* labels */
     *(labels)
     . = ALIGN (16);

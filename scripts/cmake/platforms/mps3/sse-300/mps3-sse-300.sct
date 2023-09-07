@@ -88,14 +88,20 @@ LOAD_REGION_1       0x70000000                  0x02000000
     ; input vectors and labels. If the activation buffer
     ; size required by the network is bigger than the
     ; SRAM size available, it is accommodated here.
+    ; 
+    ; 10MiB is allocated in a separate region and image
+    ; for model to facilitate independent updates
     ;-----------------------------------------------------
-    ddr.bin        0x70000000 ALIGN 16         0x02000000
+    model.bin      0x70000000 ALIGN 16         0x00A00000
+    {
+        ; nn model's default space
+        *.o (nn_model)
+    }
+
+    ddr.bin        0x70A00000 ALIGN 16         0x01600000
     {
         ; nn model's baked in input matrices
         *.o (ifm)
-
-        ; nn model's default space
-        *.o (nn_model)
 
         ; labels
         *.o (labels)
